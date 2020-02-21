@@ -30,13 +30,31 @@ class Houses extends React.Component {
       .get(`${process.env.REACT_APP_API}/houses`)
       .then(res => {
         this.setState({
-          houses: res.data
+          houses: res.data,
+          originalHouses: res.data
         });
       })
       .catch(err => {
         console.log({ err });
       });
   }
+
+  search = e => {
+    //console.log(e.target.value);
+    let v = e.target.value;
+    let houses = this.state.originalHouses;
+    let filtered_houses = houses.filter(h => {
+      return (
+        h.title.toLowerCase().includes(v.toLowerCase()) ||
+        h.region.toLowerCase().includes(v.toLowerCase()) ||
+        h.city.toLowerCase().includes(v.toLowerCase())
+      );
+    });
+    this.setState({
+      houses: filtered_houses
+    });
+  };
+
   render() {
     return (
       <>
@@ -60,13 +78,18 @@ class Houses extends React.Component {
             <option value="price">Lowest Price</option>
             <option value="rating">Highest Rating</option>
           </select>
-          <input type="text" className="search" placeholder="Search..." />
+          <input
+            type="text"
+            className="search"
+            placeholder="Search..."
+            onChange={this.search}
+          />
         </div>
         <div className="grid map">
           <div className="grid four large">
             {// List of thumbnails
             this.state.houses.map(house => (
-              <Thumbnail house={house} />
+              <Thumbnail house={house} key={house._id} />
             ))}
           </div>
           <div className="map">
