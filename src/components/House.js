@@ -1,12 +1,12 @@
 import React from "react";
 import axios from "axios";
+import Nav from "./Nav";
 // Components
 
 // CSS
 import "../styles/cards.css";
 import "../styles/grid.css";
 import "../styles/users.css";
-import "../styles/nav.css";
 import "../styles/gallery.css";
 import "../styles/review.css";
 
@@ -30,14 +30,7 @@ class House extends React.Component {
   render() {
     return (
       <>
-        <nav>
-          <a href="/" className="logo"></a>
-          <div className="profile">
-            <a href="/plus" className="button">
-              <span>Airbnb Plus</span>
-            </a>
-          </div>
-        </nav>
+        <Nav />
         <div className="gallery">
           <div className="image-main"></div>
           <div className="previews">

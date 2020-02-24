@@ -5,9 +5,9 @@ import GoogleMap from "google-map-react";
 import "../styles/cards.css";
 import "../styles/grid.css";
 import "../styles/maps.css";
-import "../styles/nav.css";
 import House from "./House";
 import Thumbnail from "./Thumbnail";
+import Nav from "./Nav";
 import Pin from "./Pin";
 
 class Houses extends React.Component {
@@ -129,14 +129,7 @@ class Houses extends React.Component {
   render() {
     return (
       <>
-        <nav>
-          <a href="/" className="logo"></a>
-          <div className="profile">
-            <a href="/plus" className="button">
-              <span>Airbnb Plus</span>
-            </a>
-          </div>
-        </nav>
+        <Nav />
         <div className="filters">
           <select onChange={this.selectOption}>
             {[...Array(6)].map((e, i) => {
