@@ -1,5 +1,7 @@
 import React from "react";
 import Houses from "./Houses";
+import Plus from "./Plus";
+import { Link } from "react-router-dom";
 
 class Thumbnail extends React.Component {
   render() {
@@ -8,6 +10,7 @@ class Thumbnail extends React.Component {
         className="card link"
         href={`/houses/${this.props.house._id}`}
         key={this.props.house._id}
+        onMouseEnter={id => this.props.id(this.props.house._id)}
       >
         <div
           className="image"
