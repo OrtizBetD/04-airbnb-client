@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import Nav from "./Nav";
 import Gallery from "./Gallery";
+import Review from "./Review";
 // Components
 
 // CSS
@@ -32,9 +33,24 @@ class House extends React.Component {
     axios
       .get(`${process.env.REACT_APP_API}/houses/${this.props.match.params.id}`)
       .then(res => {
+        console.log(res.data);
         this.setState({
           house: res.data
         });
+      })
+      .catch(err => {
+        console.log({ err });
+      });
+    axios
+      .get(
+        `${process.env.REACT_APP_API}/reviews?house=${this.props.match.params.id}`
+      )
+      .then(res => {
+        console.log(res.data);
+        this.setState({
+          reviews: res.data
+        });
+        console.log(this.state.reviews);
       })
       .catch(err => {
         console.log({ err });
