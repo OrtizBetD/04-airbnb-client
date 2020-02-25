@@ -57,7 +57,12 @@ class House extends React.Component {
                 </span>
               </small>
               <div className="user">
-                <div className="avatar"></div>
+                <div
+                  className="avatar"
+                  style={{
+                    backgroundImage: `url('${this.state.house.host.avatar}')`
+                  }}
+                ></div>
                 <div className="name">
                   <small>Hosted by</small>
                   <span>{this.state.house.host.name}</span>
@@ -136,15 +141,21 @@ class House extends React.Component {
                     <small>per night</small>
                   </h3>
                   <small>
-                    <i className="fas fa-star"></i>
-                    <i className="far fa-star"></i>
+                    {[...Array(this.state.house.rating)].map((e, i) => {
+                      return <i className="fas fa-star"></i>;
+                    })}
+                    {[...Array(5 - this.state.house.rating)].map((e, i) => {
+                      return <i className="far fa-star"></i>;
+                    })}
                     <span>{this.state.reviews.length} Reviews</span>
                   </small>
                   <form className="small">
                     <div className="group">
                       <label>Guests</label>
                       <select>
-                        <option>1 guests</option>
+                        {[...Array(this.state.house.guests)].map((e, i) => {
+                          return <option value={i + 1}>{i + 1} guests</option>;
+                        })}
                       </select>
                     </div>
                     <div className="group">
