@@ -10,7 +10,6 @@ import "../styles/cards.css";
 import "../styles/grid.css";
 import "../styles/users.css";
 import "../styles/gallery.css";
-import "../styles/review.css";
 
 class House extends React.Component {
   state = {
@@ -122,32 +121,10 @@ class House extends React.Component {
                   </ul>
                 </div>
               </div>
-              <div className="reviews">
-                <h2>
-                  {`${this.state.reviews.length} `}
-                  Reviews
-                </h2>
-                {this.state.reviews.map((review, i) => {
-                  return (
-                    <div className="card review" key={i}>
-                      <div className="content">
-                        <div className="user">
-                          <div className="avatar"></div>
-                          <div className="name">
-                            <span>{review.author.name}</span>
-                            <small>{review.author.location}</small>
-                          </div>
-                        </div>
-                        <div className="rating">
-                          <i className="fas fa-star"></i>
-                          <i className="far fa-star"></i>
-                        </div>
-                        <p>{review.content}</p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              <Review
+                reviews={this.state.reviews}
+                key={this.state.reviews._id}
+              />
             </div>
             <div className="sidebar">
               <div className="card shadow">
