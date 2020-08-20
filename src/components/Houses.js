@@ -11,12 +11,17 @@ import Nav from "./Nav";
 import Pin from "./Pin";
 
 class Houses extends React.Component {
-  state = {
+  //Initial state definition
+  state =
+  {
     houses: [],
     types: [],
+    typeFilter: 'allFilters',
+    minbedrooms:0,
+    maxPrice: 200000,
     map: {
       key: {
-        key: "AIzaSyBKMVj4gaJLU9GTV1zOaWQj7ggKVbXQep0"
+        key: process.env.GOOGLE_MAP_KEY
       },
       center: {
         lat: -8.652,
