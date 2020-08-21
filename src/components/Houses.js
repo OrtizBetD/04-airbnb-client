@@ -9,6 +9,7 @@ import House from "./House";
 import Thumbnail from "./Thumbnail";
 import Nav from "./Nav";
 import Pin from "./Pin";
+require('dotenv').config();
 
 class Houses extends React.Component {
   //Initial state definition
@@ -21,7 +22,7 @@ class Houses extends React.Component {
     maxPrice: 200000,
     map: {
       key: {
-        key: process.env.GOOGLE_MAP_KEY
+        key: process.env.REACT_APP_API_KEY
       },
       center: {
         lat: -8.652,
@@ -30,8 +31,8 @@ class Houses extends React.Component {
       zoom: 14
     }
   };
-  componentWillMount() {
-    console.log(process.env);
+  async componentWillMount() {
+    console.log(process.env.REACT_APP_API_KEY);
     axios
       .get(`${process.env.REACT_APP_API}/houses`)
       .then(res => {
@@ -75,9 +76,9 @@ class Houses extends React.Component {
     });
   };
 
+//filtering houses by number of bedrooms
   selectOption = e => {
     console.log(e.target.value);
-
     let v = e.target.value;
     let houses = this.state.originalHouses;
     let filtered_houses = houses.filter(h => {
@@ -135,13 +136,14 @@ class Houses extends React.Component {
     return (
       <>
         <Nav />
+        {/*Filtering in dropdown menu by number of bedrooms*/}
         <div className="filters">
           <select onChange={this.selectOption}>
             {[...Array(6)].map((e, i) => {
               return <option value={i + 1}>Min Bedrooms: {i + 1}</option>;
             })}
           </select>
-          }
+          {/* Room Types */}
           <select onChange={this.selectHouse}>
             <option value="All Types">All Types</option>
             {this.state.types.map(element => {
