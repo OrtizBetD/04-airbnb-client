@@ -16,10 +16,11 @@ class Houses extends React.Component {
   state =
   {
     houses: [],
+    allHouses:[],
     types: [],
-    typeFilter: 'allFilters',
+    typeFilter: 'allTypes',
     minbedrooms:0,
-    maxPrice: 200000,
+    price: 200000,
     map: {
       key: {
         key: process.env.REACT_APP_API_KEY
@@ -38,7 +39,7 @@ class Houses extends React.Component {
       .then(res => {
         this.setState({
           houses: res.data,
-          originalHouses: res.data
+          allHouses: res.data
         });
       })
       .catch(err => {
@@ -47,7 +48,7 @@ class Houses extends React.Component {
     console.log(this.state.houses);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     axios
       .get(`${process.env.REACT_APP_API}/types`)
       .then(res => {
@@ -63,7 +64,7 @@ class Houses extends React.Component {
   search = e => {
     //console.log(e.target.value);
     let v = e.target.value;
-    let houses = this.state.originalHouses;
+    let houses = this.state.allHouses;
     let filtered_houses = houses.filter(h => {
       return (
         h.title.toLowerCase().includes(v.toLowerCase()) ||
@@ -76,51 +77,65 @@ class Houses extends React.Component {
     });
   };
 
-//filtering houses by number of bedrooms
-  selectOption = e => {
-    console.log(e.target.value);
-    let v = e.target.value;
-    let houses = this.state.originalHouses;
-    let filtered_houses = houses.filter(h => {
-      return h.bedrooms >= v;
-    });
-    this.setState({
-      houses: filtered_houses
-    });
-  };
+
+
+//filtering houses by type of houses
 
   selectHouse = e => {
     //console.log(e.target.value);
 
-    let v = e.target.value;
-    if (v === "All Types") {
-      let houses = this.state.originalHouses;
-      this.setState({
-        houses: houses
-      });
-    } else {
-      let houses = this.state.originalHouses;
-      let filtered_houses = houses.filter(h => {
-        return h.type.name == v;
-      });
-      this.setState({
-        houses: filtered_houses
-      });
+    let typeFilter = e.target.value;
+    let houses = this.state.allHouses;
+    let filtered_houses = houses.filter(house => {
+			return house.type.name == e.target.value
+		})
+    if (typeFilter === "All Types") {
+      this.setState({ typeFilter, houses}, () => this.applyFilter()
+      );
+    }
+    else {
+
+      this.setState({typeFilter, houses: filtered_houses}, () => this.applyFilter());
     }
   };
 
-  maxPrice = e => {
-    console.log(e.target.value);
+  //filtering houses by number of bedrooms
+    selectOption = e => {
 
-    let v = e.target.value;
-    let houses = this.state.originalHouses;
-    let filtered_houses = houses.filter(h => {
-      return h.price <= v;
-    });
-    this.setState({
-      houses: filtered_houses
-    });
+      let numberBedrooms = e.target.value;
+      this.setState({ minbedrooms: numberBedrooms}, () => this.applyFilter())
+      }
+  maxPrice = e => {
+
+    let price = e.target.value;
+    if (price == ''){
+      this.setState({
+          price: 1000000
+      },
+      () => this.applyFilter()
+    )
+  }
+    else{
+    this.setState({price}, () => this.applyFilter())
   };
+}
+
+  applyFilter = () => {
+    let filterHouses = []
+    this.state.allHouses.forEach(house => {
+      if (
+          house.bedrooms > this.state.minbedrooms &&
+          house.price < Number(this.state.price) &&
+          (house.type.name == this.state.typeFilter ||
+           this.state.typeFilter == 'allTypes')
+
+      ){
+        filterHouses.push(house)
+      }
+
+    })
+    this.setState({houses: filterHouses})
+  }
   houseOver = id => {
     let houses = this.state.houses;
     houses.map(h => {
